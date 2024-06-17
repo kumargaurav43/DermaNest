@@ -1,0 +1,202 @@
+{% extends 'Base.html' %}
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags %}  
+            <script>alert("{{ message }}")</script> 
+        {% endif %}
+    {% endfor %}
+{% endif %}
+{% load static %}
+    <title>Appointment Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            background-image: url("{% static 'images/medical_background.jpg' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .appointment-form {
+            display: none;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        input[type=text], input[type=date], input[type=email], input[type=time], textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        #pdfDownload {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .receipt {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Book Appointment</h1>
+        <button id="bookAppointmentBtn">Book Appointment</button>
+    </div>
+
+    <div class="appointment-form" id="appointmentForm">
+        <form id="appointmentDetails">
+            <label for="patientName">Patient Name:</label>
+            <input type="text" id="patientName" name="patientName" required><br>
+
+            <label for="mobileNo">Mobile No:</label>
+            <input type="text" id="mobileNo" name="mobileNo" required><br>
+
+            <label for="emailId">Email ID:</label>
+            <input type="email" id="emailId" name="emailId" required><br>
+
+            <label for="address">Address:</label>
+            <textarea id="address" name="address" required></textarea><br>
+
+            <label for="appointmentDate">Appointment Date:</label>
+            <input type="date" id="appointmentDate" name="appointmentDate" required><br>
+
+            <label for="appointmentTime">Appointment Time:</label>
+            <input type="time" id="appointmentTime" name="appointmentTime" required><br>
+
+            <label for="doctor">Select Doctor:</label>
+            <select id="doctor" name="doctor" required>
+                <option value="">Choose Doctor</option>
+                <option value="Dr. Sanjeev Kumar Singh">Dr. Sanjeev Kumar Singh</option>
+                <option value="Dr. Soni Gupta">Dr. Soni Gupta</option>
+                <option value="Dr. Pankaj Sareen">Dr. Pankaj Sareen</option>
+                <option value="Dr. Rakesh Kumar">Dr. Rakesh Kumar</option>
+                <option value="Dr. Rupika Singh">Dr. Rupika Singh</option>
+                <option value="Dr. Deepak Jakhar">Dr. Deepak Jakhar</option>
+                <option value="Dr. Renu Madan">Dr. Renu Madan</option>
+                <option value="Dr. Ishmeet Kaur">Dr. Ishmeet Kaur</option>
+            </select><br>
+
+            <label for="disease">Select Disease:</label>
+            <select id="disease" name="disease" required>
+                <option value="">Choose Disease</option>
+                <option value="Acne">Acne</option>
+                <option value="Basal Cell Carcinoma">Basal Cell Carcinoma</option>
+                <option value="Actinic Keratosis">Actinic Keratosis</option>
+                <option value="Melanoma">Melanoma</option>
+            </select><br>
+
+            <button type="submit">Confirm Appointment</button>
+        </form>
+    </div>
+
+    <div id="receipt" class="receipt" style="display: none;"></div>
+    <div id="pdfDownload" style="display: none;">
+        <button id="downloadPdfBtn">Download PDF</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+    <script>
+        document.getElementById('bookAppointmentBtn').addEventListener('click', function() {
+    document.getElementById('appointmentForm').style.display = 'block';
+});
+
+document.getElementById('appointmentDetails').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Retrieve form data
+    const patientName = document.getElementById('patientName').value;
+    const mobileNo = document.getElementById('mobileNo').value;
+    const emailId = document.getElementById('emailId').value;
+    const address = document.getElementById('address').value;
+    const appointmentDate = document.getElementById('appointmentDate').value;
+    const appointmentTime = document.getElementById('appointmentTime').value;
+    const doctor = document.getElementById('doctor').value;
+    const disease = document.getElementById('disease').value;
+
+    // Generate receipt content
+    const receiptContent = `
+        <h2>Dermanest</h2>
+        <p><strong>Appointment Receipt</strong></p>
+        <p><strong>Patient Name:</strong> ${patientName}</p>
+        <p><strong>Mobile No:</strong> ${mobileNo}</p>
+        <p><strong>Email ID:</strong> ${emailId}</p>
+        <p><strong>Address:</strong> ${address}</p>
+        <p><strong>Appointment Date:</strong> ${appointmentDate}</p>
+        <p><strong>Appointment Time:</strong> ${appointmentTime}</p>
+        <p><strong>Doctor:</strong> ${doctor}</p>
+        <p><strong>Disease:</strong> ${disease}</p>
+    `;
+
+    // Display receipt
+    const receiptDiv = document.getElementById('receipt');
+    receiptDiv.innerHTML = receiptContent;
+    receiptDiv.style.display = 'block';
+
+    // Display thank you message
+    alert("Thanks for booking an appointment!");
+
+    // Display download button
+    document.getElementById('pdfDownload').style.display = 'block';
+
+    // Event listener for download PDF button
+    document.getElementById('downloadPdfBtn').addEventListener('click', function() {
+        generateReceiptPDF(receiptDiv);
+    });
+});
+
+function generateReceiptPDF(receiptDiv) {
+    const { jsPDF } = window.jspdf;
+
+    html2canvas(receiptDiv).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const doc = new jsPDF();
+
+        doc.addImage(imgData, 'PNG', 10, 10, 180, 160);
+        doc.save('appointment_receipt.pdf');
+    }).catch(error => {
+        console.error("Error generating PDF:", error);
+    });
+}
+
+
+    </script>
+{% endblock %}

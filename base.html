@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skin Disease Detection System</title>
+  <link rel="shortcut icon" href="/media/favicon-32x32.png" type="image/x-icon">
+
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+   <!-- new file upload kri hai yaha pr -->
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+   <!-- yaha tak -->
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+
+   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital@1&family=Poppins:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+
+<style>
+  *{
+  font-family: 'Poppins',sans-serif;
+}
+
+#sans{
+font-family: 'Noto Sans', sans-serif;
+font-family: 'Poppins', sans-serif;
+}
+
+body{
+  background-color: gray;
+}
+
+nav {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<nav style="background-color:white;" class="navbar navbar-expand-lg sticky-top">
+  <div class="container-fluid">
+    <a  class="navbar-brand sans" href="#">DermaNest </a><img style="border-right: solid 3px;padding-right: 5px;" src="/media/logo.jpg" height="40" />
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'Home'%}">Home</a>
+        </li>
+        {% if  request.session.type_id  == 'User' %}
+         <li class="nav-item">
+          <a class="nav-link active" href="{% url 'Upload_image'%}">Upload Image</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'View_Doctors2'%}">View Doctors</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'feedback'%}">Give feedback</a>
+        </li>
+   
+
+        {%elif request.session.type_id == 'Admin' %}
+
+       
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'View_doctors'%}">View Doctors</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'View_feedback'%}">View feedback</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'View_Users'%}">View Users</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'manage_medicine'%}">Manage Medicine</a>
+        </li>
+
+      </div>
+
+        {%endif%}
+      </ul>
+      <form style="padding-right:100px ;" class="d-flex" role="search">
+        {% if  request.session.login == 'Yes' %} 
+          {% if  request.session.type_id  == 'User' %}
+            <li class="nav-item" style="list-style-type: none;"><a class = "nav-link" aria-current="page" style="color:black;">Hi, {{request.session.UserType}}</a></li>
+
+          {% elif  request.session.type_id  == 'Admin' %}
+            <li class="nav-item" style="list-style-type: none;"><a class = "nav-link" aria-current="page" style="color:black;">Hi, {{request.session.UserType}}</a></li>
+          {%endif%}
+            &nbsp;&nbsp;&nbsp;
+            <li class="nav-item" style="list-style-type: none;"><a class = "nav-link" aria-current="page" href="{% url 'Logout'%}">Log Out</a></li>
+          {%else%}
+         <!-- <li style="list-style : none;" class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Login
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'Admin_Login'%}">Admin Login</a></li>
+            <li><a class="dropdown-item" href="{% url 'login'%}">User Login</a></li>
+          </ul>
+        </li> -->
+
+        <!-- kuch new try krte hai  -->
+            <li style="list-style: none;" class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">User Registration</a></li>
+            <li style="list-style: none;" class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">User Login</a></li>
+            <li style="list-style: none;" class="nav-item">
+            <a class="nav-link" href="{% url 'Admin_Login' %}">Admin Login</a></li>
+
+        <!-- yaha tak  -->
+        {%endif%}
+      </form>
+    </div>
+  </div>
+</nav>
+
+
+{% block content %}
+
+{% endblock %}
+
+</body>
+    <footer class="text-white text-center text-lg-start bg-primary">
+    <!-- Grid container -->
+    <div class="container p-4">
+      <!--Grid row-->
+      <div class="row mt-4">
+        <!--Grid column-->
+        <div class="col-lg-4 col-md-12 mb-4 mb-md-0">
+          <h5 class="text-uppercase mb-4">About company</h5>
+  
+        <!-- isme changes krne hai project ke according -->
+
+          <p>
+            Dermanest is your trusted companion for quick and accurate skin health assessments using advanced artificial intelligence. By simply uploading an image of your skin or affected area, our AI technology analyzes it to provide insights into potential skin conditions. We aim to empower individuals with accessible, reliable, and private skin health evaluations, guiding you towards appropriate care with ease.
+          </p>
+  
+          <p>
+            Whether you're concerned about a rash, a mole, or any other skin irregularity, Dermanest offers a seamless solution for better skin health.
+          </p>
+  
+          <div class="mt-4">
+            <!-- Facebook -->
+            <a type="button" class="btn btn-floating btn-primary btn-lg"><i class="fab fa-facebook-f"></i></a>
+            <!-- Twitter -->
+            <a type="button" class="btn btn-floating btn-primary btn-lg"><i class="fab fa-twitter"></i></a>
+            <!-- Instagram -->
+            <a type="button" class="btn btn-floating btn-primary btn-lg"><i class="fab fa-instagram"></i></a>
+            <!-- Google + -->
+            <a type="button" class="btn btn-floating btn-primary btn-lg"><i class="fab fa-google"></i></a>
+            <!-- Linkedin -->
+            <a type="button" class="btn btn-floating btn-primary btn-lg"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+        <!--Grid column-->
+  
+        <!--Grid column-->
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase mb-4 pb-1">Search something</h5>
+  
+          <div class="container mt-5">
+        <div class="form-outline form-white mb-4">
+            <input type="text" id="formControlLg" class="form-control form-control-lg" />
+            <label class="form-label" for="formControlLg">Search</label>
+        </div>
+    </div>
+  
+          <ul class="fa-ul" style="margin-left: 1.65em;">
+            <li class="mb-3">
+              <span class="fa-li"><i class="fas fa-home"></i></span><span class="ms-2">New York, NY 10012, US</span>
+            </li>
+            <li class="mb-3">
+              <span class="fa-li"><i class="fas fa-envelope"></i></span><span class="ms-2">info@dermanest.com</span>
+            </li>
+            <li class="mb-3">
+              <span class="fa-li"><i class="fas fa-phone"></i></span><span class="ms-2">+ 01 234 567 88</span>
+            </li>
+            <li class="mb-3">
+              <span class="fa-li"><i class="fas fa-print"></i></span><span class="ms-2">+ 01 234 567 89</span>
+            </li>
+          </ul>
+        </div>
+        <!--Grid column-->
+  
+        <!--Grid column-->
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <h5 class="text-uppercase mb-4">Opening hours</h5>
+  
+          <table class="table text-center text-white">
+            <tbody class="font-weight-normal">
+              <tr>
+                <td>Mon - Thu:</td>
+                <td>8am - 9pm</td>
+              </tr>
+              <tr>
+                <td>Fri - Sat:</td>
+                <td>8am - 1am</td>
+              </tr>
+              <tr>
+                <td>Sunday:</td>
+                <td>9am - 10pm</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="ratio ratio-16x9">
+  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3500.4668507626643!2d77.49942917401978!3d28.675678282122796!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cf30885b1e2a5%3A0x9983675e24c6638b!2sAjay%20Kumar%20Garg%20Engineering%20College!5e0!3m2!1sen!2sin!4v1716629054042!5m2!1sen!2sin" width="450" height="450" style="border:1;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+        </div>
+        <!--Grid column-->
+
+      </div>
+      <!--Grid row-->
+    </div>
+    <!-- Grid container -->
+  
+    <!-- Copyright part-->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2024 Copyright:
+      <a class="text-white" href="http://127.0.0.1:8000/">DermaNest</a>
+    </div>
+    <!-- Copyright -->
+  </footer>
+  
+<!-- End of .container -->
+
+</html>

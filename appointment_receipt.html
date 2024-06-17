@@ -1,0 +1,13 @@
+{% extends 'Base.html' %}
+{% block content %}
+<h1>Appointment Receipt</h1>
+
+<p>Thank you for booking an appointment!</p>
+<p><strong>Name:</strong> {{ appointment.name }}</p>
+<p><strong>Mobile No:</strong> {{ appointment.mobile }}</p>
+<p><strong>Email:</strong> {{ appointment.email }}</p>
+<p><strong>Address:</strong> {{ appointment.address }}</p>
+<p><strong>Doctor:</strong> Dr. {{ appointment.doctor.name }}</p>
+
+<a href="{% url 'download_receipt' appointment.id %}" class="btn btn-primary">Download Receipt</a>
+{% endblock %}

@@ -1,0 +1,218 @@
+{% extends 'Base.html' %}
+
+{% block content %}
+  {% if messages %}
+    {% for message in messages %}
+      {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+    {% endfor %}
+  {% endif %}
+  {% load static %}
+
+  <style>
+    .hero {
+      background-image: url('/media/home.jpg');
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+    .hero .container {
+      position: relative;
+      z-index: 2;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+    }
+    .hero button {
+      margin-top: 20px;
+    }
+    .features, .how-it-works, .about, .contact {
+      padding: 60px 0;
+    }
+    .features {
+      background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+      color: black;
+    }
+    .how-it-works {
+      background: linear-gradient(45deg, #a18cd1 0%, #fbc2eb 100%);
+      color: black;
+    }
+    .testimonials {
+      background: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);
+      color: black;
+    }
+    .about {
+      background: linear-gradient(45deg, #ffecd2 0%, #fcb69f 100%);
+      color: #333;
+    }
+    .contact {
+      background: linear-gradient(45deg, #a1c4fd 0%, #c2e9fb 100%);
+      color: #333;
+    }
+    .card {
+      border: none;
+      transition: transform 0.3s;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    .card-body {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 10px;
+    }
+    .blockquote-footer {
+      color: #666;
+    }
+  </style>
+
+  <header class="hero">
+    <div class="container">
+      <h1 class="text-white">Advanced Skin Disease Detection</h1>
+      <p class="text-white">Upload a photo of your skin condition and get results in seconds</p>
+      <button class="btn btn-primary btn-lg" onclick="document.getElementById('features').scrollIntoView({ behavior: 'smooth' });">Get Started</button>
+    </div>
+  </header>
+
+  <section id="features" class="features text-center">
+    <div class="container">
+      <h2 class="mb-5">Features</h2>
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="card-title">Accurate Results</h3>
+              <p class="card-text">Our AI model provides highly accurate results.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="card-title">Fast Processing</h3>
+              <p class="card-text">Get your results within seconds.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="card-title">Secure and Private</h3>
+              <p class="card-text">Your data is secure and confidential.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how-it-works text-center">
+    <div class="container">
+      <h2 class="mb-5">How It Works</h2>
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="card-title">Step 1</h3>
+              <p class="card-text">Upload a photo of the affected area.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="card-title">Step 2</h3>
+              <p class="card-text">Our AI analyzes the image.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="card-title">Step 3</h3>
+              <p class="card-text">Receive your diagnosis and next steps.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials text-center">
+    <div class="container">
+      <h2 class="mb-5">What Our Users Say</h2>
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+                <p>"This service is amazing! I got my diagnosis in minutes."</p>
+                <footer class="blockquote-footer">Gaurav</footer>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+                <p>"Very accurate and fast. Highly recommend it."</p>
+                <footer class="blockquote-footer">Harsh Kr. Verma</footer>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about text-center">
+    <div class="container">
+      <h2 class="mb-5">About Us</h2>
+      <p>We are committed to providing the best skin disease detection services using advanced AI technology. Our team consists of experienced dermatologists and AI experts.</p>
+    </div>
+  </section>
+
+  <section class="contact text-center">
+    <div class="container">
+      <h2 class="mb-5">Contact Us</h2>
+      <form>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Your Name">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Your Email">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea class="form-control" id="message" rows="4" placeholder="Your Message"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send</button>
+      </form>
+    </div>
+  </section>
+
+{% endblock %}
